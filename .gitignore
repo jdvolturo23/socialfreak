@@ -20,5 +20,5 @@
 /spring/*.pid
 
 # ssh files.
-ssh-add
-ssh-add.pub
+/ssh-add
+/ssh-add.pub
