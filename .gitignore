@@ -19,6 +19,9 @@
 # Ignore Spring files.
 /spring/*.pid
 
-# ssh files.
-/ssh-add
+# Ignore ssh files.
+/*.ssh-add
 /ssh-add.pub
+
+# Ignore Gemfile.lock files.
+/*.lock
