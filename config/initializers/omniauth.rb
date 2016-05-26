@@ -1,13 +1,17 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :twitter, Rails.application.secrets.twitter_api_key, Rails.application.secrets.twitter_api_secret
+  provider :twitter, ENV['TWITTER_API_KEY'], ENV['TWITTER_API_SECRET']
 
-  provider :facebook, Rails.application.secrets.facebook_api_key, Rails.application.secrets.facebook_api_secret,
+  provider :facebook, ENV['FACEBOOK_API_KEY'], ENV['FACEBOOK_API_SECRET'],
            scope: 'public_profile', info_fields: 'id,name,link'
 
-  provider :google_oauth2, Rails.application.secrets.google_api_key, Rails.application.secrets.google_api_secret,
-           scope: 'profile', image_aspect_ratio: 'square', image_size: 48,
-           access_type: 'offline', skip_jwt: true
+  provider :google_oauth2, ENV['GOOGLE_API_KEY'], ENV['GOOGLE_API_SECRET'],
+           scope: 'profile', image_aspect_ratio: 'square', image_size: 48, access_type: 'online', name: 'google',
+           access_type: "offline", skip_jwt: true
 
+  OmniAuth.config.on_failure = Proc.new do |env|
+    SessionsController.action(:auth_failure).call(env)
+    # error_type = env['omniauth.error.type']
+    # new_path = "#{env['SCRIPT_NAME']}#{OmniAuth.config.path_prefix}/failure?message=#{error_type}"
+    # [301, {'Location' => new_path, 'Content-Type' => 'text/html'}, []]
+  end
 end
-
-
